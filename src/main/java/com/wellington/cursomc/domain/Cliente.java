@@ -14,8 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wellington.cursomc.domain.enums.TipoCliente;
 
 @Entity
@@ -30,15 +29,14 @@ public class Cliente implements Serializable {
 	private String cpfOuCnpj;
 	private Integer tipo; //macete para pegar o id do enum
 	
-	@JsonManagedReference
 	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	@ElementCollection //associação com a tabela CLIENTE
 	@CollectionTable(name="TELEFONE") //declaração do nome da tabela no banco
 	private Set<String> telefones = new HashSet<>();
-	
-	@JsonBackReference
+
+	@JsonIgnore
 	@OneToMany(mappedBy="cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
@@ -142,7 +140,5 @@ public class Cliente implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }
